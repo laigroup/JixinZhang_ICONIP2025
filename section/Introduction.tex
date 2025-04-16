@@ -1,29 +1,31 @@
-The propositional model counting problem \#SAT, which is the problem of calculating a satisfactory assigned quantity for a given Boolean formula, 
-has applications including software verification\cite{A1}\cite{A2},hardware design and planning\cite{B1}\cite{B2}\\ \cite{A3}, and is a fundamental 
-challenge in computer science. However, \#SAT is \#P-complete and is therefore at least as computationally difficult as the NP-complete problem. 
-Traditional exact \#SAT solvers (e.g., DPLL-based)\cite{A4}\cite{A5} struggle with large-scale CNF formulas due to exponential complexity. 
-While approximate methods (e.g., MiniCount-based)\cite{A6} scale better, they often fail to capture complex clause-variable dependencies, leading 
-to significant errors in structured instances, so many approximate solvers (i.e. methods that provide an estimate of the number of solutions) have 
-been developed, which can be scaled up to larger problem sizes, but the approximate methods sacrifice a certain degree of accuracy.\\
+The propositional model counting problem \#SAT, which is the problem of calculating a satisfactory assigned quantity for a given 
+Boolean formula, has applications including software verification\cite{A1}\cite{A2},hardware design and planning\cite{B1}\cite{B2}\\ 
+\cite{A3}, and is a fundamental challenge in computer science. However, \#SAT is \#P-complete and is therefore at least as computationally 
+difficult as the NP-complete problem. Traditional exact \#SAT solvers (e.g., DPLL-based)\cite{A4}\cite{A5} struggle with large-scale CNF 
+formulas due to exponential complexity. While approximate methods (e.g., MiniCount-based)\cite{A6} scale better, they often fail to 
+capture complex clause-variable dependencies, leading to significant errors in structured instances, so many approximate solvers 
+(i.e. methods that provide an estimate of the number of solutions) have been developed, which can be scaled up to larger problem sizes,
+but the approximate methods sacrifice a certain degree of accuracy.\\
 
-With the superior learning capabilities of neural networks, various machine learning and deep learning methods have recently been proposed for 
-propositional model counting problems\cite{A7}\cite{B3}\cite{B4}. A series of studies aimed at constructing independent neural solvers to solve 
-combinatorial and logical reasoning tasks that directly predict the number of satisfactory assignments for a given instance\cite{A8}\cite{A9}. 
-Other methods integrate neural modules into classical solvers, improving the branch heuristic algorithm in the \#SAT solver\cite{A10}. Although 
-neural network methods show great potential to solve \#SAT, they still face some challenges. Existing GNN models (such as NSNet\cite{A11}, 
-BPNN\cite{A12}) rely on simple belief propagation (BP) and cannot effectively model higher-order dependencies and global constraint structures 
-between variables. Furthermore, how to combine the deep learning model with the strict reasoning of symbolic logic while ensuring that the deep 
-learning model has good expressiveness?\cite{A12} How to enhance the reasoning ability of the model for complex constraints?\cite{A14}\\
+With the superior learning capabilities of neural networks, various machine learning and deep learning methods have recently been 
+proposed for propositional model counting problems\cite{A7}\cite{B3}\cite{B4}. A series of studies aimed at constructing independent 
+neural solvers to solve combinatorial and logical reasoning tasks that directly predict the number of satisfactory assignments for a given instance\cite{A8}\cite{A9}. Other methods integrate neural modules into classical solvers, improving the branch heuristic algorithm 
+in the \#SAT solver\cite{A10}. Although neural network methods show great potential to solve \#SAT, they still face some challenges. 
+Existing GNN models (such as NSNet\cite{A11}, BPNN\cite{A12}) rely on simple belief propagation (BP) and cannot effectively model 
+higher-order dependencies and global constraint structures between variables. Furthermore, how to combine the deep learning model with 
+the strict reasoning of symbolic logic while ensuring that the deep learning model has good expressiveness?\cite{A12} How to enhance the 
+reasoning ability of the model for complex constraints?\cite{A14}\\
 
-In order to solve these problems, we propose the AEIN model in this paper. In this work, AEIN bridges the neural-symbolic gap by integrating the 
-Iterative Join Graph Propagation  algorithm (IJGP)\cite{A15} into GNNs.   Specifically, we use GAT layers to simulate IJGP's belief updates, while 
-tree decomposition guides hierarchical attention (intra-cluster and inter-cluster message passing). Inspired by HAN(Zichao Yang et al.,2016)\cite{B5}, 
-this hierarchical attention method is a text classification model in which attention mechanisms are applied in layers of text. At the same time, 
-in order to reduce the extra overhead brought by the attention mechanism, we adopt the method of dynamic pruning attention heads with the time step
-\cite{B6}\cite{A16}, which has more attention heads at the early stage of iteration and reduces them successively to avoid redundant calculations.
-As a focus of this paper, the constraint-aware attention mechanism encourages variable values to tend to satisfy clauses by showing modeling 
-constraints (calculating attention scores) as regularization terms in the loss function, guiding the first two kinds of attention simultaneously. \\
+In order to solve these problems, we propose the AEIN model in this paper. In this work, AEIN bridges the neural-symbolic gap by 
+integrating the Iterative Join Graph Propagation  algorithm (IJGP)\cite{A15} into GNNs.   Specifically, we use GAT layers to simulate 
+IJGP's belief updates, while tree decomposition guides hierarchical attention (intra-cluster and inter-cluster message passing). 
+Inspired by HAN(Zichao Yang et al.,2016)\cite{B5}, this hierarchical attention method is a text classification model in which attention 
+mechanisms are applied in layers of text. At the same time, in order to reduce the extra overhead brought by the attention mechanism, 
+we adopt the method of dynamic pruning attention heads with the time step\cite{B6}\cite{A16}, which has more attention heads at the early 
+stage of iteration and reduces them successively to avoid redundant calculations.As a focus of this paper, the constraint-aware attention 
+mechanism encourages variable values to tend to satisfy clauses by showing modeling constraints (calculating attention scores) as 
+regularization terms in the loss function, guiding the first two kinds of attention simultaneously. \\
 
-The partition function has been shown to be a good approximation of the number of Boolean formula solutions\cite{A17}\cite{A18}, and our model 
-similarly follows this computational approach, with careful and extensive experimental investigation, and experiments on BIRD and SATLIB benchmarks 
-show that our method is significantly superior to NSNet. 
+The partition function has been shown to be a good approximation of the number of Boolean formula solutions\cite{A17}\cite{A18}, and 
+our model similarly follows this computational approach, with careful and extensive experimental investigation, and experiments on BIRD 
+and SATLIB benchmarks show that our method is significantly superior to NSNet. 
