@@ -25,7 +25,9 @@ Following BPNN and NSNet, we use the (1) root mean square error (RMSE) between t
 countings and ground truth as our evaluation metrics. We compare AEIN , the neural baseline BPNN and 
 NSNet, and two state-of-the-art approximate model counting solvers, ApproxMC3\cite{A19} and F2\cite{B8}. 
 For ApproxMC3 and F2, we set a time limit of 5,000 seconds on each instance.
+
 \subsection{Main Results}
+
 \begin{figure}[htbp]
     \centering
     \begin{subfigure}{0.48\textwidth}
@@ -46,6 +48,7 @@ For ApproxMC3 and F2, we set a time limit of 5,000 seconds on each instance.
     the BIRD benchmark}
     \label{fig:total}
 \end{figure}
+
 As shown in Figure~\ref{fig:sub1}, AEIN can estimate tighter counts than NSNet, BPNN, and F2 in all 
 categories of the BIRD benchmark. AEIN estimates are almost three times more accurate than F2 and BPNN. 
 However, AEIN cannot compete with ApproxMC3.
@@ -64,6 +67,7 @@ the BIRD benchmark is collected from many real-world model counting applications
 common logical structures to learn, whereas instances in the SATLIB benchmark are randomly generated, 
 making it difficult for AEIN to exploit common features. Despite this, AEIN still outperforms NSNet and 
 F2 in most categories.
+
 \begin{table}[htbp] 
   \centering  
   \caption{RMSE between estimated log countings and ground truth for each solver on the SATLIB benchmark.}  
@@ -78,6 +82,7 @@ F2 in most categories.
   \end{tabular}
   \label{tab1}  
 \end{table}\\
+
 \begin{table}[htbp] 
   \centering  
   \caption{Ablation experiments of the AEIN model on three refinements.}  
@@ -94,6 +99,7 @@ F2 in most categories.
   \end{tabular}
   \label{tab2}  
 \end{table}\\
+
 To prove that the three attention mechanisms of our AEIN model are effective, Table~\ref{tab2} shows its 
 ablation experiments with RMSE, attention head utilization and training time as evaluation metrics. Experiments 
 show that the three attention mechanisms all play a positive role in the model. Among them, the hierarchical 
