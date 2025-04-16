@@ -13,18 +13,19 @@ developed, which can be scaled up to larger problem sizes,but the approximate me
 certain degree of accuracy.\\
 
 With the superior learning capabilities of neural networks, various machine learning and deep learning 
-methods have recently been proposed for propositional model counting problems\cite{DBLP:conf/aaai/VaezipoorLWMGSB21}\cite{Atkari_2019_10}\cite{DBLP:conf/ijcnn/OzolinsFDGZK22}. 
-A series of studies aimed at constructing independent neural solvers to solve combinatorial and logical 
-reasoning tasks that directly predict the number of satisfactory assignments for a given instance
-\cite{DBLP:conf/iclr/AmizadehMW19}\cite{DBLP:journals/corr/abs-1903-01969}. Other methods integrate neural 
-modules into classical solvers, improving the branch heuristic algorithm in the \#SAT solver
-\cite{DBLP:conf/aaai/VaezipoorLWMGSB21}. Although neural network methods show great potential 
-to solve \#SAT, they still face some challenges. Existing GNN models (such as NSNet\cite{DBLP:conf/nips/LiS22}, 
-BPNN\cite{DBLP:conf/nips/KuckCTLSSE20}) rely on simple belief propagation (BP) and cannot effectively 
-model higher-order dependencies and global constraint structures between variables. Furthermore, how 
-to combine the deep learning model with the strict reasoning of symbolic logic while ensuring that the 
-deep learning model has good expressiveness?\cite{DBLP:journals/tkde/WuLL24} How to enhance the reasoning 
-ability of the model for complex constraints?\cite{DBLP:journals/pami/ChenJYZ22}\\
+methods have recently been proposed for propositional model countingproblems\cite{DBLP:conf/aaai/VaezipoorLWMGSB21}
+\cite{Atkari_2019_10}\cite{DBLP:conf/ijcnn/OzolinsFDGZK22}. A series of studies aimed at constructing 
+independent neural solvers to solve combinatorial and logical reasoning tasks that directly predict
+the number of satisfactory assignments for a given instance\cite{DBLP:conf/iclr/AmizadehMW19}
+\cite{DBLP:journals/corr/abs-1903-01969}. Other methods integrate neural modules into classical solvers, 
+improving the branch heuristic algorithm in the \#SAT solver\cite{DBLP:conf/aaai/VaezipoorLWMGSB21}.
+Although neural network methods show great potential to solve \#SAT, they still face some challenges. 
+Existing GNN models (such as NSNet\cite{DBLP:conf/nips/LiS22}, BPNN\cite{DBLP:conf/nips/KuckCTLSSE20}) 
+rely on simple belief propagation (BP) and cannot effectively model higher-order dependencies and global 
+constraint structures between variables. Furthermore, how to combine the deep learning model with the 
+strict reasoning of symbolic logic while ensuring that the deep learning model has good expressiveness?
+\cite{DBLP:journals/tkde/WuLL24} How to enhance the reasoning ability of the model for complex 
+constraints?\cite{DBLP:journals/pami/ChenJYZ22}\\
 
 In order to solve these problems, we propose the AEIN model in this paper. In this work, AEIN bridges 
 the neural-symbolic gap by integrating the Iterative Join Graph Propagation  algorithm (IJGP)
