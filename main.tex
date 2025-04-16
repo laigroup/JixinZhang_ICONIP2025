@@ -21,10 +21,19 @@
 \begin{center}
     {\LARGE {AEIN: Attention-Enhanced Iterative Join Graph Neural Networks}} \\[1.5em]
     Jixin Zhang\textsuperscript{a}, Y.Lai\textsuperscript{b} \\[0.5em]
-    {\small \textsuperscript{a,b}\textit{Key Labroatory of Symbolic Computation and Knowledge Engineering of Ministry of Education, Jilin University, Changchun, 130012, China}}
+    {\small \textsuperscript{a,b}\textit{Key Labroatory of Symbolic Computation and 
+    Knowledge Engineering of Ministry of Education, Jilin University, Changchun, 130012, China}}
 \end{center}
 \begin{abstract}
-We propose an Attention-Enhanced Iterative Join Graph Neural Networks(AEIN) model for solving \#SAT problems, which significantly improves the solving accuracy. Inspired by the Iterative Join Graph Propagation (IJGP) algorithm, AEIN uses tree decomposition to encode the CNF formula into a connection graph, then performs iterative message passing on the join-graph, and finally approximates the model number by learning partition functions. In order to further improve the accuracy of the solution, we apply the attention mechanism in and between clusters of the join-graphs, which makes AEIN pay more attention to the key variables and clusters in probabilistic inference, and reduces the redundant calculation. Finally, our experiments show that our AEIN model achieves better results than other neural network methods.
+We propose an Attention-Enhanced Iterative Join Graph Neural Networks(AEIN) model for solving 
+\#SAT problems, which significantly improves the solving accuracy. Inspired by the Iterative 
+Join Graph Propagation (IJGP) algorithm, AEIN uses tree decomposition to encode the CNF formula 
+into a connection graph, then performs iterative message passing on the join-graph, and finally 
+approximates the model number by learning partition functions. In order to further improve the 
+accuracy of the solution, we apply the attention mechanism in and between clusters of the 
+join-graphs, which makes AEIN pay more attention to the key variables and clusters in probabilistic 
+inference, and reduces the redundant calculation. Finally, our experiments show that our AEIN model 
+achieves better results than other neural network methods.
 \end{abstract}
 
 \section{Introduction}
