@@ -1,47 +1,36 @@
-The propositional model counting problem \#SAT, which is the problem of calculating a satisfactory 
-assigned quantity for a given Boolean formula, has applications including software verification
-\cite{DBLP:journals/fmsd/ClarkeBRZ01}\cite{DBLP:journals/tcs/IvancicYGGA08},hardware design and 
-planning\cite{DBLP:conf/dac/SilvaS00}\cite{DBLP:conf/fmcad/SheeranSS00}\\ \cite{DBLP:conf/aips/DomshlakH06}, 
-and is a fundamental challenge in computer science. However, \#SAT is \#P-complete and is therefore 
-at least as computationally difficult as the NP-complete problem. Traditional exact \#SAT solvers 
-(e.g., DPLL-based)\cite{DBLP:journals/tfs/Guller18}\cite{DBLP:journals/jacm/NieuwenhuisOT06} struggle 
-with large-scale CNF formulas due to exponential complexity. While approximate methods 
-(e.g., MiniCount-based)\cite{DBLP:journals/anor/KrocSS11} scale better, they often fail to capture 
-complex clause-variable dependencies,leading to significant errors in structured instances, so many 
-approximate solvers (i.e. methods that provide an estimate of the number of solutions) have been 
-developed, which can be scaled up to larger problem sizes,but the approximate methods sacrifice a 
-certain degree of accuracy.\\
+The propositional model counting problem \#SAT, that is, counting the number of assignments 
+that find a satisfactory value for a given Boolean formula. It can be applied to areas including
+software verification\cite{DBLP:journals/fmsd/ClarkeBRZ01}\cite{DBLP:journals/tcs/IvancicYGGA08}, 
+hardware design planning\cite{DBLP:conf/dac/SilvaS00}\cite{DBLP:conf/fmcad/SheeranSS00}\cite{DBLP:conf/aips/DomshlakH06}, 
+and is a fundamental challenge in computer science. However, \#SAT is \#P-complete and thus its 
+computational difficulty is at least as high as that of the NP-complete problem. As neural networks
+have demonstrated superior learning capabilities, various machine learning and deep learning methods 
+have been proposed for propositional model counting problems\cite{DBLP:conf/aaai/VaezipoorLWMGSB21}
+\cite{Atkari_2019_10}\cite{DBLP:conf/ijcnn/OzolinsFDGZK22}, including standalone neural solvers that 
+directly predict the numberof task instances for a given task satisfactory assignment \cite{DBLP:conf/iclr/AmizadehMW19}
+\cite{DBLP:journals/corr/abs-1903-01969}, and by integrating neural modules into classical solvers, 
+which can be used to solve the problem, an algorithm for improving its branching heuristics.
 
-With the superior learning capabilities of neural networks, various machine learning and deep learning 
-methods have recently been proposed for propositional model countingproblems\cite{DBLP:conf/aaai/VaezipoorLWMGSB21}
-\cite{Atkari_2019_10}\cite{DBLP:conf/ijcnn/OzolinsFDGZK22}. A series of studies aimed at constructing 
-independent neural solvers to solve combinatorial and logical reasoning tasks that directly predict
-the number of satisfactory assignments for a given instance\cite{DBLP:conf/iclr/AmizadehMW19}
-\cite{DBLP:journals/corr/abs-1903-01969}. Other methods integrate neural modules into classical solvers, 
-improving the branch heuristic algorithm in the \#SAT solver\cite{DBLP:conf/aaai/VaezipoorLWMGSB21}.
-Although neural network methods show great potential to solve \#SAT, they still face some challenges. 
-Existing GNN models (such as NSNet\cite{DBLP:conf/nips/LiS22}, BPNN\cite{DBLP:conf/nips/KuckCTLSSE20}) 
-rely on simple belief propagation (BP) and cannot effectively model higher-order dependencies and global 
-constraint structures between variables. Furthermore, how to combine the deep learning model with the 
-strict reasoning of symbolic logic while ensuring that the deep learning model has good expressiveness?
-\cite{DBLP:journals/tkde/WuLL24} How to enhance the reasoning ability of the model for complex 
-constraints?\cite{DBLP:journals/pami/ChenJYZ22}\\
+A recent work, NSNet\cite{DBLP:conf/nips/LiS22}, a general neural network framework, has shown promising 
+results on \#SAT problems relying only on simple belief propagation (BP). However, compared with the belief 
+propagation algorithm, the Iterative join graph propagation algorithm(IJGP)\cite{DBLP:journals/corr/abs-1301-0564} 
+avoids the repeated message propagation caused by the complex ring structure by tree decomposition. At the 
+same time, for those long clauses, IJGP splits them into multiple small clusters, and only deals with short 
+constraints in each cluster. Compared with the simple belief propagation, the solution accuracy is improved.
 
-In order to solve these problems, we propose the AEIN model in this paper. In this work, AEIN bridges 
-the neural-symbolic gap by integrating the Iterative Join Graph Propagation  algorithm (IJGP)
-\cite{DBLP:journals/corr/abs-1301-0564} into GNNs.   Specifically, we use GAT layers to simulate IJGP's 
-belief updates, while tree decomposition guides hierarchical attention (intra-cluster and inter-cluster 
-message passing). Inspired by HAN(Zichao Yang et al.,2016)\cite{DBLP:conf/naacl/YangYDHSH16}, this 
-hierarchical attention method is a text classification model in which attention mechanisms are applied in 
-layers of text. At the same time, in order to reduce the extra verhead brought by the attention mechanism, 
-we adopt the method of dynamic pruning attention heads with the timestep\cite{DBLP:conf/icip/LiCLCSQW23}
-\cite{DBLP:journals/nn/ZhangLWWW24}, which has more attention heads at the early stage of iteration and 
-reduces them successively to avoid redundant calculations.As a focus of this paper, the constraint-aware 
-attention mechanism encourages variable values to tend to satisfy clauses by showing modeling constraints 
-(calculating attention scores) as regularization terms in the loss function, guiding the first two kinds 
-of attention simultaneously. \\
+Another approximate model counter BPGAT\cite{DBLP:conf/esann/Saveri22} by extending the BPNN\cite{DBLP:conf/nips/KuckCTLSSE20} 
+architecture has also achieved some results by introducing an attention mechanism by giving higher weights 
+to those important variables. However, the huge overhead brought by the attention mechanism makes it not 
+perform well on large-scale tasks. Inspired by HAN\cite{DBLP:conf/naacl/YangYDHSH16}(a text classification 
+model that applies the attention mechanism hierarchically), this paper applies the attention mechanism to the 
+unique tree decomposition structure of IJGP. The intra-cluster attention is calculated for each cluster of 
+the connection graph, and the inter-cluster attention is calculated between the two clusters, which not only 
+greatly reduces the extra overhead caused by the attention mechanism, but also can display the use of tree 
+decomposition structure, accurately model complex constraints, and dynamically adjust the weight of different 
+clauses.
 
-The partition function has been shown to be a good approximation of the number of Boolean formula 
-solutions\cite{Bethe_1997_07}\cite{DBLP:journals/siamdm/ChandrasekaranCGSS11}, and our model similarly 
-follows this computational approach, with careful and extensive experimental investigation, and experiments 
-on BIRD and SATLIB benchmarks show that our method is significantly superior to NSNet. 
+Therefore, this paper proposes AEIN model, which parameterizes IJGP in latent space by GNN and simulates its message 
+update by attention mechanism. By implementing intra-cluster constraint awareness, inter-cluster hierarchical weights, 
+dynamic pruning\cite{DBLP:conf/icip/LiCLCSQW23}\cite{DBLP:journals/nn/ZhangLWWW24}, and finally learning the partition 
+function\cite{Bethe_1997_07}\cite{DBLP:journals/siamdm/ChandrasekaranCGSS11} to predict the number of models, the AEIN 
+model achieves competitive results in terms of inference accuracy on multiple \#SAT datasets.
