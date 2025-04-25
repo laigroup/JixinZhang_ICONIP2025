@@ -1,37 +1,52 @@
 \section{Introduction}
-The propositional model counting problem \#SAT, that is, counting the number of assignments 
-that find a satisfactory value for a given Boolean formula. It can be applied to areas including
-software verification\cite{DBLP:journals/fmsd/ClarkeBRZ01}\cite{DBLP:journals/tcs/IvancicYGGA08}, 
-hardware design planning\cite{DBLP:conf/dac/SilvaS00}\cite{DBLP:conf/fmcad/SheeranSS00}\cite{DBLP:conf/aips/DomshlakH06}, 
-and is a fundamental challenge in computer science. However, \#SAT is \#P-complete and thus its 
-computational difficulty is at least as high as that of the NP-complete problem. As neural networks
-have demonstrated superior learning capabilities, various machine learning and deep learning methods 
-have been proposed for propositional model counting problems\cite{DBLP:conf/aaai/VaezipoorLWMGSB21}
-\cite{Atkari_2019_10}\cite{DBLP:conf/ijcnn/OzolinsFDGZK22}, including standalone neural solvers that 
-directly predict the numberof task instances for a given task satisfactory assignment \cite{DBLP:conf/iclr/AmizadehMW19}
-\cite{DBLP:journals/corr/abs-1903-01969}, and by integrating neural modules into classical solvers, 
-which can be used to solve the problem, an algorithm for improving its branching heuristics.
 
-A recent work, NSNet\cite{DBLP:conf/nips/LiS22}, a general neural network framework, has shown promising 
-results on \#SAT problems relying only on simple belief propagation (BP). However, compared with the belief 
-propagation algorithm, the Iterative join graph propagation algorithm(IJGP)\cite{DBLP:journals/corr/abs-1301-0564} 
-avoids the repeated message propagation caused by the complex ring structure by tree decomposition. At the 
-same time, for those long clauses, IJGP splits them into multiple small clusters, and only deals with short 
-constraints in each cluster. Compared with the simple belief propagation, the solution accuracy is improved.
+The propositional model counting problem \#SAT, that is, counting the number of assignments
+that find a satisfactory value for a given Boolean formulas. It can be applied to areas 
+including software verification \cite{DBLP:journals/fmsd/ClarkeBRZ01}\cite{DBLP:journals/tcs/IvancicYGGA08}, 
+hardware design and planning \cite{DBLP:conf/dac/SilvaS00}\cite{DBLP:conf/fmcad/SheeranSS00}
+\cite{DBLP:conf/aips/DomshlakH06}, and is a fundamental challenge in computer science. However, 
+\#SAT is \#P-complete and thus its computational difficulty is at least NP-complete hard. 
+Despite the practical success of modern \#SAT solvers in these areas, the performance of 
+most of these solvers depends on a good heuristic, and designing a good enough heuristic is 
+time consuming. As neural networks have demonstrated superior learning capabilities, various
+machine learning and deep learning methods have been proposed for propositional model counting
+\cite{DBLP:conf/aaai/VaezipoorLWMGSB21}\cite{Atkari_2019_10}\cite{DBLP:conf/ijcnn/OzolinsFDGZK22}, 
+including independent neural solvers that directly predict the number of instances for which 
+a given task is satisfactorily assigned \cite{DBLP:conf/iclr/AmizadehMW19}\cite{DBLP:journals/corr/abs-1903-01969}. 
+Another line of research improves algorithms for branching heuristics by integrating neural 
+modules into classical solvers. 
 
-Another approximate model counter BPGAT\cite{DBLP:conf/esann/Saveri22} by extending the BPNN\cite{DBLP:conf/nips/KuckCTLSSE20} 
-architecture has also achieved some results by introducing an attention mechanism by giving higher weights 
-to those important variables. However, the huge overhead brought by the attention mechanism makes it not 
-perform well on large-scale tasks. Inspired by HAN\cite{DBLP:conf/naacl/YangYDHSH16}(a text classification 
-model that applies the attention mechanism hierarchically), this paper applies the attention mechanism to the 
-unique tree decomposition structure of IJGP. The intra-cluster attention is calculated for each cluster of 
-the connection graph, and the inter-cluster attention is calculated between the two clusters, which not only 
-greatly reduces the extra overhead caused by the attention mechanism, but also can display the use of tree 
-decomposition structure, accurately model complex constraints, and dynamically adjust the weight of different 
-clauses.
+A recent work, NSNet\cite{DBLP:conf/nips/LiS22}, a general graph neural network framework, 
+formulates the satisfiability problem as a probabilistic inference problem over a graph and 
+relies only on simple belief propagation (BP) as a message update rule in the latent space, 
+showing promising results on the \#SAT problem. However, when the BP algorithm is faced with 
+complex ring structures, it will inevitably produce repeated messages, which leads to that 
+NSNet can only deal with specific graph structures, and the solution accuracy is also limited 
+by BP. Another approximate model counter BPGAT\cite{DBLP:conf/esann/Saveri22} by extending 
+the architecture of BPNN\cite{DBLP:conf/nips/KuckCTLSSE20} does improve the solution accuracy 
+by introducing an attention mechanism by giving higher weights to those important variables. 
+However, due to the huge overhead brought by the attention mechanism, it does not show good 
+results on large-scale tasks.
 
-Therefore, this paper proposes AEIN model, which parameterizes IJGP in latent space by GNN and simulates its message 
-update by attention mechanism. By implementing intra-cluster constraint awareness, inter-cluster hierarchical weights, 
-dynamic pruning\cite{DBLP:conf/icip/LiCLCSQW23}\cite{DBLP:journals/nn/ZhangLWWW24}, and finally learning the partition 
-function\cite{Bethe_1997_07}\cite{DBLP:journals/siamdm/ChandrasekaranCGSS11} to predict the number of models, the AEIN 
-model achieves competitive results in terms of inference accuracy on multiple \#SAT datasets.
+In order to solve the above problems, in this paper, we propose to use the Iterative Join Graph 
+Propagation(IJGP)\cite{DBLP:journals/corr/abs-1301-0564} algorithm combined with the attention
+mechanism to solve the \#SAT problem, which is both the Attention Enhanced Iterative Join Graph 
+Propagation algorithm (AEIN). IJGP algorithm flexibly controls the graph structure by controlling 
+the tree-width of tree decomposition, and puts some related variables and clause nodes into a cluster 
+structure. Different clusters are connected by marked edges to form a join graph, and then the 
+attention mechanism is applied to each cluster separately. The AEIN model parameterizes the IJGP 
+in the latent space by GNN, and uses the attention mechanism to simulate its message update. IJGP 
+avoids the repeated message passing on the ring through edge labeling, and its unique tree decomposition 
+structure also enables us to better introduce the attention mechanism, which reduces the time complexity 
+by an order of magnitude.
+
+In order to solve the problem of the difference between the two structures of message passing within 
+and between clusters, we adopt a hierarchical structure of two attention layers, which are responsible 
+for the message passing within and between clusters respectively. In order to improve the solution 
+efficiency, we add a constraint awareness module to the loss function in the form of a regularization 
+term, which gives priority to satisfying clauses that are easy to satisfy and penalizes variable assignments 
+that violate constraints. In order to improve the training speed and reduce resource consumption, we 
+design a dynamic attention mechanism\cite{DBLP:conf/icip/LiCLCSQW23}\cite{DBLP:journals/nn/ZhangLWWW24} 
+by dynamically increasing or decreasing the number of attention heads over time steps. Experiments on 
+BIRD and SATLIB benchmarks show that the proposed method outperforms NSNet and BPGAT in terms of solution 
+accuracy.
