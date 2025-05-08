@@ -1,52 +1,68 @@
 \section{Introduction}
 
-The propositional model counting problem \#SAT, that is, counting the number of assignments
-that find a satisfactory value for a given Boolean formulas. It can be applied to areas 
-including software verification \cite{DBLP:journals/fmsd/ClarkeBRZ01}\cite{DBLP:journals/tcs/IvancicYGGA08}, 
-hardware design and planning \cite{DBLP:conf/dac/SilvaS00}\cite{DBLP:conf/fmcad/SheeranSS00}
-\cite{DBLP:conf/aips/DomshlakH06}, and is a fundamental challenge in computer science. However, 
-\#SAT is \#P-complete and thus its computational difficulty is at least NP-complete hard. 
-Despite the practical success of modern \#SAT solvers in these areas, the performance of 
-most of these solvers depends on a good heuristic, and designing a good enough heuristic is 
-time consuming. As neural networks have demonstrated superior learning capabilities, various
-machine learning and deep learning methods have been proposed for propositional model counting
-\cite{DBLP:conf/aaai/VaezipoorLWMGSB21}\cite{Atkari_2019_10}\cite{DBLP:conf/ijcnn/OzolinsFDGZK22}, 
-including independent neural solvers that directly predict the number of instances for which 
-a given task is satisfactorily assigned \cite{DBLP:conf/iclr/AmizadehMW19}\cite{DBLP:journals/corr/abs-1903-01969}. 
-Another line of research improves algorithms for branching heuristics by integrating neural 
-modules into classical solvers. 
+Combinatorial optimization problems (cops) are prevalent in various fields from science to industry, 
+including disciplines such as statistical physics, operations research, and artificial intelligence. 
+However, most of these problems are non-deterministic polynomial-time hard (NP-hard) problems, which 
+pose significant computational challenges. \#SAT stands for propositional model Counting problem, 
+which counts the number of assignments for which a satisfactory value is found for a given Boolean formula. 
+It can be used in the software validation \cite{DBLP:journals/fmsd/ClarkeBRZ01}\cite{DBLP:journals/tcs/IvancicYGGA08}, 
+hardware design and planning\cite{DBLP:conf/dac/SilvaS00}\cite{DBLP:conf/fmcad/SheeranSS00} 
+\cite{DBLP:conf/aips/DomshlakH06}, is also a kind of combinatorial optimization problems, so the 
+calculation difficulty, at least, is np-complete. Despite the practical success of modern \#SAT solvers 
+in these areas, the performance of most solvers depends on good enough heuristics, and designing 
+heuristics is time-consuming.\\
 
-A recent work, NSNet\cite{DBLP:conf/nips/LiS22}, a general graph neural network framework, 
-formulates the satisfiability problem as a probabilistic inference problem over a graph and 
-relies only on simple belief propagation (BP) as a message update rule in the latent space, 
-showing promising results on the \#SAT problem. However, when the BP algorithm is faced with 
-complex ring structures, it will inevitably produce repeated messages, which leads to that 
-NSNet can only deal with specific graph structures, and the solution accuracy is also limited 
-by BP. Another approximate model counter BPGAT\cite{DBLP:conf/esann/Saveri22} by extending 
-the architecture of BPNN\cite{DBLP:conf/nips/KuckCTLSSE20} does improve the solution accuracy 
-by introducing an attention mechanism by giving higher weights to those important variables. 
-However, due to the huge overhead brought by the attention mechanism, it does not show good 
-results on large-scale tasks.
+With neural network show the excellent learning ability, various machine learning especially deep 
+learning methods have been proposed for proposition model-counting \cite{DBLP:conf/aaai/VaezipoorLWMGSB21}
+\cite {Atkari_2019_10} \cite{DBLP:conf/ijcnn/OzolinsFDGZK22}, including independent neural solver, 
+Directly predict satisfaction in a given task distribution of the number of instances 
+\cite{DBLP:conf/iclr/AmizadehMW19}\cite{DBLP:journals/corr/abs-1903-01969}. Another research focus 
+is building general neural network frameworks that act as approximate \#SAT solvers by learning bethe 
+approximations of the partition function from statistical physics.\\
 
-In order to solve the above problems, in this paper, we propose to use the Iterative Join Graph 
-Propagation(IJGP)\cite{DBLP:journals/corr/abs-1301-0564} algorithm combined with the attention
-mechanism to solve the \#SAT problem, which is both the Attention Enhanced Iterative Join Graph 
-Propagation algorithm (AEIN). IJGP algorithm flexibly controls the graph structure by controlling 
-the tree-width of tree decomposition, and puts some related variables and clause nodes into a cluster 
-structure. Different clusters are connected by marked edges to form a join graph, and then the 
-attention mechanism is applied to each cluster separately. The AEIN model parameterizes the IJGP 
-in the latent space by GNN, and uses the attention mechanism to simulate its message update. IJGP 
-avoids the repeated message passing on the ring through edge labeling, and its unique tree decomposition 
-structure also enables us to better introduce the attention mechanism, which reduces the time complexity 
-by an order of magnitude.
+A recent work, NSNet \cite{DBLP:conf/nips/LiS22}, a general graph neural network framework, formulates 
+the satisfiability problem as a probabilistic inference problem on graphs, relies only on simple belief 
+propagation (BP) as a message update rule in the latent space, and estimates the partition function to 
+complete the approximate prediction. Promising results are shown on the \#SAT problem. However, the BP 
+algorithm inevitably produces repeated messages when facing complex ring structures, resulting in that 
+NSNet can only deal with specific graph structures, and the solution accuracy is also limited by the BP 
+algorithm.\\
 
-In order to solve the problem of the difference between the two structures of message passing within 
-and between clusters, we adopt a hierarchical structure of two attention layers, which are responsible 
-for the message passing within and between clusters respectively. In order to improve the solution 
-efficiency, we add a constraint awareness module to the loss function in the form of a regularization 
-term, which gives priority to satisfying clauses that are easy to satisfy and penalizes variable assignments 
-that violate constraints. In order to improve the training speed and reduce resource consumption, we 
-design a dynamic attention mechanism\cite{DBLP:conf/icip/LiCLCSQW23}\cite{DBLP:journals/nn/ZhangLWWW24} 
-by dynamically increasing or decreasing the number of attention heads over time steps. Experiments on 
-BIRD and SATLIB benchmarks show that the proposed method outperforms NSNet and BPGAT in terms of solution 
-accuracy.
+Approximate model counter BPGAT \cite{DBLP:conf/esann/Saveri22} by extending the BPNN architecture
+\cite{DBLP:conf/nips/KuckCTLSSE20}, by introducing attention mechanism, gives important variables or clause 
+higher weights, As a result, the solution accuracy is improved. However, due to the huge overhead brought 
+by the attention mechanism, it does not show good results on large-scale tasks.\\
+
+In order to solve the above problems, this paper proposes to use Iterative Join Graph Propagation (IJGP) 
+\cite{DBLP:journals/corr/abs-1301-0564} algorithm combined with attention mechanism to solve \#SAT problem, 
+named Attention-Enhanced Iterative Join Graph Propagation (AEIN). IJGP algorithm is an approximate inference 
+algorithm for probabilistic graphical models (such as Bayesian networks, Markov networks), which aims to 
+efficiently compute the marginal or conditional probabilities of variables. The key idea is to approximate 
+the exact solution by building a simplified Join Graph and iteratively passing local messages. Compared with 
+BP, IJGP can flexibly control the graph structure and message passing strategy by controlling the treewidth 
+of the tree decomposition.\\
+
+We put related variables and clause nodes into a cluster structure, connect different clusters by labeled 
+edges to form a connection graph, and apply the attention mechanism in each cluster of the connection graph 
+to achieve a hierarchical effect. The AEIN model parameterizes IJGP in the latent space via GNN and simulates 
+its message updates using an attention mechanism. IJGP avoids repeated message passing on the ring through 
+edge labeling, and its unique tree decomposition structure also enables us to better introduce the attention 
+mechanism, thus reducing the time complexity by an order of magnitude.Finally, similar to the previous framework, 
+the partition function is learned to approximately estimate the number of models.\\
+
+We adopt two attention layers responsible for the hierarchical structure of intra-cluster and inter-cluster 
+message passing respectively, aiming at the difference between the two message structures to improve the 
+solution efficiency. We add a constraint-aware module to the loss function in the form of a regularization 
+term, which prioritizes satisfying clauses that are easy to satisfy and penalizes variable assignments that 
+violate constraints. At the same time, a dynamic attention mechanism is implemented to improve the training 
+speed and reduce the resource consumption by dynamically increasing or decreasing the number of attention 
+heads with the time step.\\
+
+In ablation experiments, we prove that the above three improvements are effective, and IJGP is significantly 
+better than BP algorithm. Experimental results on the BIRD and SATLIB benchmark datasets show that, using RMSE 
+as an indicator, AEIN improves the solution accuracy by 31\% and 45\% respectively compared with NSNet and BPGAT.\\
+
+In this paper, a neural network framework AEIN is constructed, which applies the hierarchical attention mechanism 
+to the connection graph of IJGP algorithm, and optimizes the framework by two methods: constraint-aware and 
+dynamic pruning attention head, breaking through the limitations of traditional propagation algorithm on graph 
+structure, and at the same time, it is more efficient to combine with attention.
