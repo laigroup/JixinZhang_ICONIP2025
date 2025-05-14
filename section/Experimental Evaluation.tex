@@ -4,7 +4,7 @@ In all experiments, we set the feature dimension d = 64 and the number of messag
 2GAT + MLP serial connection. The initial number of attention heads is four and is increased by one every 1000 steps 
 until eight. We run all experiments on the server using a single NVIDIA A100 GPU and eight CPU cores.
 We first follow the experiment settings in recent work NSNet. Specifically, we run experiments using the same subset 
-of BIRD benchmark\cite{A19} , which contains eight categories arising from DQMR networks, grid networks, bit-blasted 
+of BIRD benchmark\cite{DBLP:conf/aaai/SoosM19} , which contains eight categories arising from DQMR networks, grid networks, bit-blasted 
 versions of SMTLIB benchmarks, and ISCAS89 combinatorial circuits. Each category has 20 to 150 CNF formulas, which we 
 split into training/testing with a ratio of 70\%/30\%. Note that the BIRD benchmark is quite small and contains 
 large-sized formulas with more than 10,000 variables and clauses, it challenges the generalization ability of our model. 
@@ -15,13 +15,13 @@ random 3-SAT on phase transition region (RND3SAT), (2) backbone-minimal random 3
 backbone size (CBS), (4) "Flat" graph coloring (GCP), and (5) "Morphed" graph coloring (SW-GCP). The whole dataset has 
 46,200 SAT instances with the number of variables ranging from 100 to 600, and we split it into training/validation/testing 
 sets with a ratio of 60\%/20\%/20\%. For both BIRD and SATLIB benchmarks, we ran the state-of-the-art exact \#SAT solver 
-DSharp\cite{B7} with a time limit of 5,000 seconds to generate the ground truth labels. The instances where DSharp fails to 
+DSharp\cite{DBLP:conf/ai/MuiseMBH12} with a time limit of 5,000 seconds to generate the ground truth labels. The instances where DSharp fails to 
 finish within the time limit are discarded.
 
 \subsection{Evaluation \& Baselines.}
 Following BPNN and NSNet, we use the (1) root mean square error (RMSE) between the estimated log countings and ground truth 
 as our evaluation metrics. We compare AEIN , the neural baseline BPNN and NSNet, and two state-of-the-art approximate model
-counting solvers, ApproxMC3\cite{A19} and F2\cite{B8}. For ApproxMC3 and F2, we set a time limit of 5,000 seconds on each instance.
+counting solvers, ApproxMC3\cite{DBLP:conf/aaai/SoosM19} and F2\cite{DBLP:conf/sat/AchlioptasHT18a}. For ApproxMC3 and F2, we set a time limit of 5,000 seconds on each instance.
 
 \subsection{Main Results}
 \begin{figure}[htbp]
@@ -66,7 +66,7 @@ and F2 in most categories.
     Method& RND3SAT& BMS & CBS& GCP&SW-GCP\\  
     \midrule
     F2& 2.13& 2.42& 2.37& 2.40&2.66\\ 
-    BPGAT& 2.08& Time out
+    BPGAT& 2.08& 2.61& time out& time out& time out&\\
     NSNet& 1.57& 2.45& 1.68& 2.14&1.37\\  
     AEIN& \textbf{1.15}& \textbf{1.66}& \textbf{1.20}& \textbf{1.96}&\textbf{0.96}\\  
     \bottomrule
