@@ -51,17 +51,13 @@ As shown in Figure~\ref{fig:sub1}, AEIN can estimate tighter counts than NSNet, 
 of the BIRD benchmark. AEIN estimates are almost three times more accurate than F2 and BPNN. However, AEIN cannot 
 compete with ApproxMC3.
 
-Table 1 shows the detailed RMSE results for each solver on the SATLIB benchmark. All SATLIB datasets were 
-generated manually and randomly, and the accuracy decreased compared to the BIRD dataset, but AEIN still 
-achieved an advantage in all categories.
-
 Figure~\ref{fig:sub2} shows the scatter plot. The estimated logarithmic count is compared to the ground truth 
 for each solver on the BIRD benchmark. When the ground truth is less than \(e^{100}\), AEIN and ApproxMC3 can 
 provide more accurate estimates than NSNet, F2 and BPNN in most cases. ApproxMC3 is unable to complete in 5000 
 seconds when the ground truth count exceeds \(e^{100}\), AEIN can still give a close approximation when the ground 
 truth count exceeds \(e^{1000}\). This demonstrates the effectiveness of AEIN in solving difficult and large cases.
 
-The solution speed of AEIN is of the same order of magnitude as that of NSNet without using the attention mechanism, 
+The solution speed of AEIN without using the attention mechanism is same order of magnitude as that of NSNet , 
 and its effect is still better than that of NSNet. This further indicates that the reasoning ability of the IJGP 
 algorithm is superior to that of BP.
 
